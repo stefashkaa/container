@@ -42,7 +42,7 @@ static int child_fn() {
 		printf("\n_________________________________________\n");
 		printf("TEST CONTAINER:\n");
         system("sysbench --test=cpu --cpu-max-prime=20000 run");
-		system("sysbench memory –threads=2 run");
+		system("sysbench --test=memory --memory-block-size=1M --memory-total-size=10G --num-threads=1 run");
         system("sysbench --test=fileio --file-total-size=40G prepare");
         system("sysbench --test=fileio --file-total-size=40G --file-test-mode=rndrw --init-rng=on --max-time=300 --max-requests=0 run");
         system("sysbench --test=fileio --file-total-size=40G cleanup");
