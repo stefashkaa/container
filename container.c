@@ -47,7 +47,7 @@ static int child_fn() {
         system("sysbench --test=memory --memory-block-size=1M --memory-total-size=10G --num-threads=1 run");
         system("sysbench --num-threads=64 --test=threads --thread-yields=1000 --thread-locks=8 run");
         system("sysbench --test=fileio --file-total-size=40G prepare");
-        system("sysbench --test=fileio --file-total-size=40G --file-test-mode=rndrw --init-rng=on --max-time=300 --max-requests=0 run");
+        system("sysbench --test=fileio --file-total-size=40G --file-test-mode=rndrw run");
         system("sysbench --test=fileio --file-total-size=40G cleanup");
         printf("\n_________________________________________\n");
 
