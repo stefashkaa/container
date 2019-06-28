@@ -23,7 +23,8 @@ static int child_fn() {
 
         // configure new network interface
 		printf("\n_________________________________________\n");
-        printf("Guest network namespace:\n");
+
+		// guest network namespace
         system("ifconfig veth1 10.1.1.2/24 up");
         system("ip link");
 		printf("\n_________________________________________\n");
@@ -63,14 +64,14 @@ int main() {
 	char buffer[1024 * sizeof(char)];
     sprintf(buffer, "echo %d > /sys/fs/cgroup/cpu/demo/tasks", child_pid);
     system(buffer);
-	printf("\n_________________________________________\n");
 
     // configure network interfaces
     char newnt[1024 * sizeof(char)];
     sprintf(newnt, "ip link add name veth0 type veth peer name veth1 netns %ld", (long) child_pid);
     system(newnt);
+
+	// host network namespace
     system("ifconfig veth0 10.1.1.1/24 up");
-    printf("Host network namespace:\n");
     system("ip link");
 	printf("\n_________________________________________\n");
 
