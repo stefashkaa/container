@@ -15,7 +15,7 @@ static int child_fn() {
     printf("PID: %ld\n", (long) getpid());
     pid_t child_pid = fork();
     if (child_pid) {
-        printf("Clone fork child PID: %ld\n", (long) child_pid);
+        printf("Clone fork child PID: %ld\n\n", (long) child_pid);
 
         // create and mount new namespace
         system("mount --make-rprivate -o remount /");
@@ -74,11 +74,10 @@ int main() {
     printf("Host network namespace:\n");
     system("ifconfig veth0 10.1.1.1/24 up");
     system("ip link");
-    printf("\n_________________________________________\n");
 
     waitpid(child_pid, NULL, 0);
 
-    // check that 'check_file.txt' is not in the host
+    // check that 'check_file.txt' is really in the guest and not in the host
     printf("Files on the local machine:\n");
     system("ls");
     return EXIT_SUCCESS;
