@@ -25,6 +25,7 @@ static int child_fn() {
 		printf("\n_________________________________________\n");
 
 		// guest network namespace
+		printf("Guest network namespace:\n");
         system("ifconfig veth1 10.1.1.2/24 up");
         system("ip link");
 		printf("\n_________________________________________\n");
@@ -57,13 +58,12 @@ static int child_fn() {
 int main() {
     pid_t child_pid = clone(child_fn, child_stack + STACK_SIZE, CLONE_NEWPID | CLONE_NEWNET | SIGCHLD | CLONE_NEWNS, NULL);
 	printf("\n_________________________________________\n");
-	printf("clone() = %ld", (long) child_pid);
-	printf("\n_________________________________________\n");
+	printf("clone() = %ld\n", (long) child_pid);
 
-	printf("Binding child process with cgroups...Done!");
 	char buffer[1024 * sizeof(char)];
     sprintf(buffer, "echo %d > /sys/fs/cgroup/cpu/demo/tasks", child_pid);
     system(buffer);
+	printf("Binding child process with cgroups...Done! ");
 
     // configure network interfaces
     char newnt[1024 * sizeof(char)];
@@ -71,6 +71,7 @@ int main() {
     system(newnt);
 
 	// host network namespace
+	printf("Host network namespace:\n");
     system("ifconfig veth0 10.1.1.1/24 up");
     system("ip link");
 	printf("\n_________________________________________\n");
